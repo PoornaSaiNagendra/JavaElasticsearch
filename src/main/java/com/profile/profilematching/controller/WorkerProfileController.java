@@ -25,8 +25,9 @@ public class WorkerProfileController {
 	}
 	
 	@PostMapping("/add")
-	public void saveCustomer(@RequestBody WorkerProfile worker) {
+	public String saveCustomer(@RequestBody WorkerProfile worker) {
 		service.save(worker); 
+		return "Profile added successfully";
 	}
 	
 	@GetMapping("/findAll")
