@@ -1,0 +1,16 @@
+{
+	"properties": {
+        "id": {
+            "type": "keyword"
+        },
+        "name": {
+          "type": "text"
+        },
+        "skills": {
+          "type": "text"
+        },
+        "location" : {
+            "type" : "geo_point"
+        }  
+     }
+}

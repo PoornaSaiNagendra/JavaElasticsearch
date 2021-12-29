@@ -14,7 +14,7 @@ import com.profile.profilematching.model.WorkerProfile;
 import com.profile.profilematching.service.WorkerProfileServiceImpl;
 
 @RestController
-@RequestMapping("/worker")
+@RequestMapping("api/worker")
 public class WorkerProfileController {
 	
 	private WorkerProfileServiceImpl service;
