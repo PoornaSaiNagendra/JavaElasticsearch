@@ -77,4 +77,25 @@ public class IndexService {
 
         return mappings;
     }
+    
+    public void deleteIndex(String indexName) {
+    	
+    	try {
+        
+	    	final boolean indexExists = client
+	                .indices()
+	                .exists(new GetIndexRequest(indexName), RequestOptions.DEFAULT);
+	        if (indexExists) {
+	
+	            client.indices().delete(
+	                    new DeleteIndexRequest(indexName),
+	                    RequestOptions.DEFAULT
+	            );
+	        }
+    	} catch (final Exception e) {
+        	System.out.println(e.getMessage());
+        }
+    	System.out.println(indexName);
+    }
+    	
 }
