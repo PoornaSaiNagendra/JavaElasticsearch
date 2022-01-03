@@ -11,6 +11,15 @@
         },
         "location" : {
             "type" : "geo_point"
-        }  
+        },
+        "skill_vector": {
+          "type": "nested",
+          "properties": {
+              "vector": {
+                  "type": "dense_vector",
+                  "dims": 384
+              }
+          }
+        }
      }
 }

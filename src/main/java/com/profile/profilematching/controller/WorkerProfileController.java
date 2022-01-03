@@ -1,5 +1,6 @@
 package com.profile.profilematching.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.profile.profilematching.model.Worker;
 import com.profile.profilematching.model.WorkerProfile;
 import com.profile.profilematching.service.WorkerProfileServiceImpl;
 
@@ -27,14 +29,34 @@ public class WorkerProfileController {
 	
 	private WorkerProfileServiceImpl service;
 	
+	private WorkerProfile workerProfileObj = new WorkerProfile();
+	
 	@Autowired
 	public WorkerProfileController(WorkerProfileServiceImpl service) {
 		this.service = service;
 	}
 	
+	
 	@PostMapping("/add")
-	public String saveCustomer(@RequestBody WorkerProfile worker) {
+	public String saveWorker(@RequestBody Worker worker) {
 		
+		service.save(externalAPIRequest(worker)); 
+		
+		return "Profile added successfully";
+	}
+	
+	public WorkerProfile externalAPIRequest(Worker worker) {
+		
+		workerProfileObj.setId(worker.getId());
+		
+		workerProfileObj.setName(worker.getName());
+		
+		workerProfileObj.setSkills(worker.getSkills());
+		
+		workerProfileObj.setLocation(worker.getLocation());
+		
+
+				
 		String url = "http://127.0.0.1:8000/predict?data={queryParameter}";
 		
 		RestTemplate template = new RestTemplate();
@@ -55,20 +77,34 @@ public class WorkerProfileController {
 		
 		System.out.println(response.getBody().getClass().getName());
 		
-		Map<String, List> hm = response.getBody();		
+		Map<String, List> hm = response.getBody();	
+		
 		
 		for (Map.Entry<String, List> mapElement : hm.entrySet()) {
 			
 			List value = mapElement.getValue();
 			
-			System.out.println(value);
+			System.out.println(value.getClass().getName());
+			
+			List listOfVectors = new ArrayList();
+			
+			for (Object mapVal : value) {
+				System.out.println(mapVal.getClass().getName());
+				
+				Map<String, Object> val = new HashMap<String, Object>();
+				val.put("vector", mapVal);
+				
+				listOfVectors.add(val);
+				
+			}
+			
+			workerProfileObj.setEmbds(listOfVectors);
+			
+			System.out.println(listOfVectors.size());
 		}
 		
-//		System.out.println(response.getBody().getValue());
+		return workerProfileObj;
 		
-		// service.save(worker); 
-		
-		return "Profile added successfully";
 	}
 	
 	@GetMapping("/findAll")
