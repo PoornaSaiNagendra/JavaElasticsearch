@@ -29,11 +29,12 @@ public class WorkerProfileController {
 	
 	private WorkerProfileServiceImpl service;
 	
-	private WorkerProfile workerProfileObj = new WorkerProfile();
+	private WorkerProfile workerProfileObj;
 	
 	@Autowired
-	public WorkerProfileController(WorkerProfileServiceImpl service) {
+	public WorkerProfileController(WorkerProfileServiceImpl service, WorkerProfile workerProfileObj) {
 		this.service = service;
+		this.workerProfileObj = workerProfileObj;
 	}
 	
 	

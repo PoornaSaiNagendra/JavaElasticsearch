@@ -10,6 +10,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.GeoPointField;
 import org.springframework.data.elasticsearch.annotations.Setting;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
+import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 
 import com.profile.profilematching.helper.Index;
 
-
+@Component
 @Document(indexName=Index.WORKER_INDEX, shards=1)
 @Setting(settingPath = "static/es-settings.json")
 @Data
