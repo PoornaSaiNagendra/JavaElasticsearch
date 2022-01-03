@@ -32,5 +32,6 @@ public class WorkerProfile {
 	private String skills;
 	@GeoPointField
     private GeoPoint location;
+	
 
 }

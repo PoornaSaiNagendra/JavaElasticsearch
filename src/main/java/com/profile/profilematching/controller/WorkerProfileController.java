@@ -1,14 +1,22 @@
 package com.profile.profilematching.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.profile.profilematching.model.WorkerProfile;
 import com.profile.profilematching.service.WorkerProfileServiceImpl;
@@ -26,7 +34,40 @@ public class WorkerProfileController {
 	
 	@PostMapping("/add")
 	public String saveCustomer(@RequestBody WorkerProfile worker) {
-		service.save(worker); 
+		
+		String url = "http://127.0.0.1:8000/predict?data={queryParameter}";
+		
+		RestTemplate template = new RestTemplate();
+		
+		HttpHeaders headers = new HttpHeaders();
+        HttpEntity requestEntity = new HttpEntity<>(headers);
+		
+		Map<String, String> uriVariables = new HashMap<>();
+		
+		System.out.println(worker.getSkills());
+		
+		String skill = worker.getSkills();
+		
+		uriVariables.put("queryParameter", skill);
+		
+		ResponseEntity<Map> response = template.exchange(url, HttpMethod.POST, requestEntity, Map.class, uriVariables);
+		
+		
+		System.out.println(response.getBody().getClass().getName());
+		
+		Map<String, List> hm = response.getBody();		
+		
+		for (Map.Entry<String, List> mapElement : hm.entrySet()) {
+			
+			List value = mapElement.getValue();
+			
+			System.out.println(value);
+		}
+		
+//		System.out.println(response.getBody().getValue());
+		
+		// service.save(worker); 
+		
 		return "Profile added successfully";
 	}
 	
